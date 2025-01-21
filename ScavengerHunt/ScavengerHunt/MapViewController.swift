@@ -16,43 +16,77 @@ class MapViewController: UIViewController {
     @IBOutlet weak var photoButton: UIButton! //attach photo
     @IBOutlet private weak var mapView: MKMapView!
     
+    
     var task: Task!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         mapView.register(MapAnnotation.self, forAnnotationViewWithReuseIdentifier: MapAnnotation.identifier)
+        //                mapView.translatesAutoresizingMaskIntoConstraints = false
+        //                view.addSubview(mapView)
+        //
+        //
+        //
+        //                // Set the region for the entire US
+        //                let centerCoordinate = CLLocationCoordinate2D(latitude: 39.8283, longitude: -98.5795)
+        //                let span = MKCoordinateSpan(latitudeDelta: 50.0, longitudeDelta: 50.0)  // Adjust these values for zoom level
+        //                let region = MKCoordinateRegion(center: centerCoordinate, span: span)
+        //
+        //                mapView.setRegion(region, animated: true)
         mapView.delegate = self
         mapView.layer.cornerRadius = 12
         updateUI()
-        updateMapView()
-        
+        setDefaultRegion()
+    }
+    private func setDefaultRegion(){
+        let coordinate = CLLocationCoordinate2D(latitude: 39.8283, longitude: -98.5795) // U.S. center
+                let span = MKCoordinateSpan(latitudeDelta: 50.0, longitudeDelta: 50.0)  // Large span for the whole U.S.
+                let region = MKCoordinateRegion(center: coordinate, span: span)
+                
+                // Set the region on the map view
+                mapView.setRegion(region, animated: true)
     }
     private func updateUI(){
         titleLabel.text = task.title
         descriptionLabel.text = task.description
         
-        let completedImage = UIImage(systemName: task.isComplete ? "circle.inset.checkmark" : "circle")
-        let color: UIColor = task.isComplete ? .systemGreen : .tertiaryLabel
+        let completedImage = UIImage(systemName: task.isComplete ? "circle.badge.checkmark" : "circle")
+        let color: UIColor = task.isComplete ? .systemGreen : .systemOrange
         completedImageView.image = completedImage?.withRenderingMode(.alwaysTemplate)
         completedImageView.tintColor = color
         
-        mapView.isHidden = !task.isComplete
+        //let completeLabel = UILabel(systemName: task.isComplete ? "Completed" : "Incomplete")
+        var completeLabel = ""
+        if(task.isComplete){
+            completeLabel = "Completed"
+        }
+        else{
+            completeLabel = "Incomplete"
+        }
+        completedLabelView.text = completeLabel
+        mapView.isHidden = false
         photoButton.isHidden = task.isComplete
         
     }
     private func updateMapView(){
-        guard let imageLocation = task.imageLocation else {return}
-        let coordinate = imageLocation.coordinate
+        var coordinate = CLLocationCoordinate2D(latitude: 39.8283, longitude: -98.5795) //location for US
+        let span = MKCoordinateSpan(latitudeDelta: 50, longitudeDelta: 50)  // should be zoomed out view of US
+        var region = MKCoordinateRegion(center:  coordinate, span: span)
+        print("task location: \(String(describing: task.imageLocation))")
+        print("task hidden? \(String(describing: mapView.isHidden))")
         
-        let region = MKCoordinateRegion(center: coordinate, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
+        if let imageLocation = task.imageLocation {
+                coordinate = imageLocation.coordinate
+            region = MKCoordinateRegion(center: coordinate, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
+            }
+
         mapView.setRegion(region, animated:true)
         let annotation = MKPointAnnotation()
         annotation.coordinate = coordinate
         mapView.addAnnotation(annotation)
     }
     @IBAction func didTapAttachPhotoButton(_ sender: Any) {
-        // TODO: Check and/or request photo library access authorization.
 
         if PHPhotoLibrary.authorizationStatus(for: .readWrite) != .authorized {
             // Request photo library access
@@ -62,7 +96,7 @@ class MapViewController: UIViewController {
                     // The user authorized access to their photo library
                     // show picker (on main thread)
                     DispatchQueue.main.async {
-                     //   self?.presentImagePicker()
+                        self?.presentImagePicker()
                     }
                 default:
                     // show settings alert (on main thread)
@@ -135,7 +169,7 @@ extension MapViewController: PHPickerViewControllerDelegate {
             return
         }
         
-        print("mage location coordinate: \(location.coordinate)")
+        print("Image location coordinate: \(location.coordinate)")
         
         guard let provider = result?.itemProvider,
               provider.canLoadObject(ofClass: UIImage.self) else { return }

@@ -35,6 +35,7 @@ class TaskViewController: UIViewController {
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?){
+       
         //if statement uneccesary as there is only one possible segue
         if segue.identifier == "MapSegue" {
             if let mapViewController = segue.destination as? MapViewController,
