@@ -9,7 +9,7 @@ import UIKit
 
 class TaskCell: UITableViewCell {
 
-    //@IBOutlet weak var completedImageView: UIImageView!
+    @IBOutlet weak var completedImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     
     func configure(with task: Task) {

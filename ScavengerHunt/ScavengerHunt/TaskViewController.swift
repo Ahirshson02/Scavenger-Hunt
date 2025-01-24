@@ -22,7 +22,6 @@ class TaskViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
         tableView.tableHeaderView = UIView()
         tableView.dataSource = self
         hunts = Task.mockHunts
@@ -30,7 +29,6 @@ class TaskViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        // This will reload data in order to reflect any changes made to a task after returning from the detail screen.
         tableView.reloadData()
     }
 
@@ -45,13 +43,13 @@ class TaskViewController: UIViewController {
                 // Get the task associated with the slected index path
                 let task = hunts[selectedIndexPath.row]
 
-                // Set the selected task on the detail view controller.
+                // Set task to pass to next screen
                 mapViewController.task = task
             }
         }
     } //end prepare
 
-}
+} //end class
 extension TaskViewController: UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return hunts.count

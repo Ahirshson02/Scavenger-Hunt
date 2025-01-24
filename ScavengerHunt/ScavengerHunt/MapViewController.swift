@@ -17,27 +17,23 @@ class MapViewController: UIViewController {
     @IBOutlet private weak var mapView: MKMapView!
     
     
+    @IBOutlet weak var navTitle: UINavigationItem!
     var task: Task!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         mapView.register(MapAnnotation.self, forAnnotationViewWithReuseIdentifier: MapAnnotation.identifier)
-        //                mapView.translatesAutoresizingMaskIntoConstraints = false
-        //                view.addSubview(mapView)
-        //
-        //
-        //
-        //                // Set the region for the entire US
-        //                let centerCoordinate = CLLocationCoordinate2D(latitude: 39.8283, longitude: -98.5795)
-        //                let span = MKCoordinateSpan(latitudeDelta: 50.0, longitudeDelta: 50.0)  // Adjust these values for zoom level
-        //                let region = MKCoordinateRegion(center: centerCoordinate, span: span)
-        //
-        //                mapView.setRegion(region, animated: true)
+        mapView.heightAnchor.constraint(equalToConstant: 300).isActive = true
+        
+
+        
         mapView.delegate = self
         mapView.layer.cornerRadius = 12
-        updateUI()
+        navTitle.title = task.title
+        mapView.isHidden = false
         setDefaultRegion()
+        updateUI()
     }
     private func setDefaultRegion(){
         let coordinate = CLLocationCoordinate2D(latitude: 39.8283, longitude: -98.5795) // U.S. center
@@ -46,6 +42,7 @@ class MapViewController: UIViewController {
                 
                 // Set the region on the map view
                 mapView.setRegion(region, animated: true)
+        mapView.isHidden = false
     }
     private func updateUI(){
         titleLabel.text = task.title
