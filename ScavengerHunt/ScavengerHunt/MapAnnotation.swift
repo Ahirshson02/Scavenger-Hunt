@@ -19,7 +19,7 @@ class MapAnnotation: MKAnnotationView {
     enum Constants {
         static let containerViewHeight: CGFloat = 80
         static let containerViewCornerRadius: CGFloat = 16
-        static let imageViewPadding: CGFloat = 4
+        static let imageViewPadding: CGFloat = 8
         static var pointerViewHieght: CGFloat { containerViewHeight / 3 }
 
         // The distance the pointer view extends downwards after rotation. Half of the hypotenuse of the view.

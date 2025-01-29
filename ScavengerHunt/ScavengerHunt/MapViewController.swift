@@ -11,7 +11,6 @@ import PhotosUI
 class MapViewController: UIViewController {
     @IBOutlet private weak var completedLabelView: UILabel! //Task completeness (complete/incomplete)
     @IBOutlet private weak var completedImageView: UIImageView! //Circle for task (filled == done, empty == not
-    @IBOutlet weak var titleLabel: UILabel! //task title
     @IBOutlet weak var descriptionLabel: UILabel! //task description
     @IBOutlet weak var photoButton: UIButton! //attach photo
     @IBOutlet private weak var mapView: MKMapView!
@@ -45,23 +44,15 @@ class MapViewController: UIViewController {
         mapView.isHidden = false
     }
     private func updateUI(){
-        titleLabel.text = task.title
+        
         descriptionLabel.text = task.description
         
         let completedImage = UIImage(systemName: task.isComplete ? "circle.badge.checkmark" : "circle")
         let color: UIColor = task.isComplete ? .systemGreen : .systemOrange
         completedImageView.image = completedImage?.withRenderingMode(.alwaysTemplate)
         completedImageView.tintColor = color
-        
-        //let completeLabel = UILabel(systemName: task.isComplete ? "Completed" : "Incomplete")
-        var completeLabel = ""
-        if(task.isComplete){
-            completeLabel = "Completed"
-        }
-        else{
-            completeLabel = "Incomplete"
-        }
-        completedLabelView.text = completeLabel
+               
+        completedLabelView.text = task.title
         mapView.isHidden = false
         photoButton.isHidden = task.isComplete
         
@@ -90,16 +81,13 @@ class MapViewController: UIViewController {
             PHPhotoLibrary.requestAuthorization(for: .readWrite) { [weak self] status in
                 switch status {
                 case .authorized:
-                    // The user authorized access to their photo library
-                    // show picker (on main thread)
                     DispatchQueue.main.async {
                         self?.presentImagePicker()
                     }
                 default:
-                    // show settings alert (on main thread)
+                    // show settings alert
                     DispatchQueue.main.async {
-                        // Helper method to show settings alert
-                        self?.presentGoToSettings()
+                        self?.presentPhotoAcessOptions()
                     }
                 }
             }
@@ -121,24 +109,60 @@ class MapViewController: UIViewController {
     
 }
 extension MapViewController{
-    func presentGoToSettings(){
+    func presentPhotoAcessOptions(){
         let alertController = UIAlertController(
             title: "Photo Access Required",
-            message: "In order attach a photo to your task",
+            message: "In order attach a photo to your task, we need access to your photo library",
             preferredStyle: .alert)
         
-        let settingsAction = UIAlertAction(title: "Settings", style: .default) { _ in
-            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString)
-            else {return }
-            if UIApplication.shared.canOpenURL(settingsUrl){
-                UIApplication.shared.open(settingsUrl)
-            }
-        }
-        alertController.addAction(settingsAction)
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let somePhotosAction = UIAlertAction(title: "Access some Photos", style: .default)
+        let allPhotosAction = UIAlertAction(title: "All Photo Access", style: .default)
+        let cancelAction = UIAlertAction(title: "Don't Allow", style: .default)
+        
+        alertController.addAction(somePhotosAction)
+        alertController.addAction(allPhotosAction)
         alertController.addAction(cancelAction)
+        
+
+//        let settingsAction = UIAlertAction(title: "Settings", style: .default) { _ in
+//      guard let settingsUrl = URL(string: UIApplication.openSettingsURLString)
+//            else {return }
+//            if UIApplication.shared.canOpenURL(settingsUrl){
+//                UIApplication.shared.open(settingsUrl)
+//            }
+//        }
+//        alertController.addAction(settingsAction)
+//        
+//        
+//        let cancelAction = UIAlertAction(title: "Don't Allow", style: .cancel, handler: nil)
+//        alertController.addAction(cancelAction)
 
         present(alertController, animated: true, completion: nil)
+    }
+    func requestPhotoLibraryPermission(completion: @escaping (Bool) -> Void) {
+        switch PHPhotoLibrary.authorizationStatus(for: .readWrite) {
+        case .authorized:
+            completion(true)
+        case .denied, .restricted:
+            completion(false)
+        case .notDetermined:
+            PHPhotoLibrary.requestAuthorization { status in
+                switch status {
+                case .authorized:
+                    completion(true)
+                case .denied, .restricted, .notDetermined:
+                    completion(false)
+                case .limited:
+                    <#code#>
+                @unknown default:
+                    completion(false)
+                }
+            }
+        case .limited:
+            <#code#>
+        @unknown default:
+            completion(false)
+        }
     }
     
     private func showAlert(for error: Error? = nil) {
