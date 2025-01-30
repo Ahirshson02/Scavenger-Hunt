@@ -8,7 +8,7 @@ Submitted by: Adam Hirshson
 
 Scavenger Hunt is an app that allows users to pick something to find, and attach a photo of that thing 
 
-Time spent: 20 hours spent in total
+Time spent: 23 hours spent in total
 
 ## Required Features
 
@@ -39,6 +39,8 @@ Here is a reminder on how to embed Loom videos on GitHub. Feel free to remove th
 Describe any challenges encountered while building the app.
 
 I had a lot of trouble setting up the constraints and photo permissions, which caused my mapview to not appear. Learning to deal with and experimenting with the constraints, and prompting for photo access without directing the user to settings took up a lot of time.
+
+I also encountered issues trying to provide limited photo access. I was able to have the user specify what photos to access, but that would not be reflected in the image picker. After much experimentation and some research, I found an Apple forum post of someone with the same issue saying it ended up being am emulator issue, found here: https://forums.developer.apple.com/forums/thread/661997
 
 ## License
 
