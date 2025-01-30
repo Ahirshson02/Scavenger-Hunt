@@ -80,7 +80,7 @@ class MapViewController: UIViewController {
             // Request photo library access
             PHPhotoLibrary.requestAuthorization(for: .readWrite) { [weak self] status in
                 switch status {
-                case .authorized:
+                case .authorized, .limited:
                     DispatchQueue.main.async {
                         self?.presentImagePicker()
                     }
@@ -101,13 +101,11 @@ class MapViewController: UIViewController {
         config.filter = .images
         config.preferredAssetRepresentationMode = .current
         config.selectionLimit = 1
-        
         let picker = PHPickerViewController(configuration: config)
-        picker.delegate = self
-        present(picker, animated: true)
+                picker.delegate = self
+                present(picker, animated: true)
     }
-    
-}
+} //end class
 extension MapViewController{
     func presentPhotoAcessOptions(){
         let alertController = UIAlertController(
@@ -115,54 +113,68 @@ extension MapViewController{
             message: "In order attach a photo to your task, we need access to your photo library",
             preferredStyle: .alert)
         
-        let somePhotosAction = UIAlertAction(title: "Access some Photos", style: .default)
-        let allPhotosAction = UIAlertAction(title: "All Photo Access", style: .default)
-        let cancelAction = UIAlertAction(title: "Don't Allow", style: .default)
-        
-        alertController.addAction(somePhotosAction)
-        alertController.addAction(allPhotosAction)
-        alertController.addAction(cancelAction)
-        
+        let somePhotosAction = UIAlertAction(title: "Access some Photos", style: .default) { _ in
+                self.requestPhotoLibraryPermission() { success in
+                    if success {
+                            if let appSettingsUrl = URL(string: UIApplication.openSettingsURLString) {
+                                if UIApplication.shared.canOpenURL(appSettingsUrl) {
+                                    UIApplication.shared.open(appSettingsUrl)
+                                }
+                            }
+                        print("Limited access granted.")
+                        }
+                    else {
+                        print("Limited access denied.")
+                    }
+                }
+            }
 
-//        let settingsAction = UIAlertAction(title: "Settings", style: .default) { _ in
-//      guard let settingsUrl = URL(string: UIApplication.openSettingsURLString)
-//            else {return }
-//            if UIApplication.shared.canOpenURL(settingsUrl){
-//                UIApplication.shared.open(settingsUrl)
-//            }
-//        }
-//        alertController.addAction(settingsAction)
-//        
-//        
-//        let cancelAction = UIAlertAction(title: "Don't Allow", style: .cancel, handler: nil)
-//        alertController.addAction(cancelAction)
-
+            let allPhotosAction = UIAlertAction(title: "All Photo Access", style: .default) { _ in
+                self.requestPhotoLibraryPermission() { success in
+                    if success {
+                        self.presentImagePicker()
+                        print("Full access granted.")
+                    } else {
+                        print("Full access denied.")
+                    }
+                }
+            }
+            
+            let cancelAction = UIAlertAction(title: "Don't Allow", style: .default) { _ in
+                    print("Access denied.")
+            }
+            
+            alertController.addAction(somePhotosAction)
+            alertController.addAction(allPhotosAction)
+            alertController.addAction(cancelAction)
+        
         present(alertController, animated: true, completion: nil)
     }
+
     func requestPhotoLibraryPermission(completion: @escaping (Bool) -> Void) {
-        switch PHPhotoLibrary.authorizationStatus(for: .readWrite) {
-        case .authorized:
-            completion(true)
-        case .denied, .restricted:
-            completion(false)
-        case .notDetermined:
-            PHPhotoLibrary.requestAuthorization { status in
+       // switch PHPhotoLibrary.authorizationStatus(for: .readWrite) {
+       // case .authorized:
+         //   completion(true)
+            
+       // case .denied, .restricted, .notDetermined:
+            
+            PHPhotoLibrary.requestAuthorization(for: .readWrite ) { status in
                 switch status {
                 case .authorized:
                     completion(true)
                 case .denied, .restricted, .notDetermined:
                     completion(false)
                 case .limited:
-                    <#code#>
+                    completion(true)
                 @unknown default:
                     completion(false)
                 }
             }
-        case .limited:
-            <#code#>
-        @unknown default:
-            completion(false)
-        }
+     //   case .limited:
+   //         completion(true)
+   //     @unknown default:
+     //       completion(false)
+      // }
     }
     
     private func showAlert(for error: Error? = nil) {

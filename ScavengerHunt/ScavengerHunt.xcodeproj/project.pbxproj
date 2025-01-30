@@ -6,10 +6,6 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		AA8D393A2D49FC5800E86F87 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = AA8D39392D49FC5000E86F87 /* README.md */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXContainerItemProxy section */
 		AA84F78C2D3DA61000EF49C1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -31,7 +27,6 @@
 		AA84F7752D3DA60F00EF49C1 /* ScavengerHunt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScavengerHunt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA84F78B2D3DA61000EF49C1 /* ScavengerHuntTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ScavengerHuntTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA84F7952D3DA61000EF49C1 /* ScavengerHuntUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ScavengerHuntUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		AA8D39392D49FC5000E86F87 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -93,7 +88,6 @@
 		AA84F76C2D3DA60F00EF49C1 = {
 			isa = PBXGroup;
 			children = (
-				AA8D39392D49FC5000E86F87 /* README.md */,
 				AA84F7772D3DA60F00EF49C1 /* ScavengerHunt */,
 				AA84F78E2D3DA61000EF49C1 /* ScavengerHuntTests */,
 				AA84F7982D3DA61000EF49C1 /* ScavengerHuntUITests */,
@@ -231,7 +225,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA8D393A2D49FC5800E86F87 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
