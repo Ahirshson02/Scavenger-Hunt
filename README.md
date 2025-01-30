@@ -10,7 +10,8 @@ Scavenger Hunt is an app that allows users to pick something to find, and attach
 
 Time spent: 23 hours spent in total
 
-<div style="position: relative; padding-bottom: 62.5%; height: 0;"><iframe src="https://www.loom.com/embed/9c9b06d1550a43dfb3ac08aa14c1f9e5?sid=5810ac98-a8e3-4cf3-a984-f51147ea8164" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>
+[![Watch the video](https://cdn.loom.com/sessions/thumbnails/9c9b06d1550a43dfb3ac08aa14c1f9e5/latest.png)](https://www.loom.com/embed/9c9b06d1550a43dfb3ac08aa14c1f9e5?sid=5810ac98-a8e3-4cf3-a984-f51147ea8164&autoplay=1)
+
 
 
 
