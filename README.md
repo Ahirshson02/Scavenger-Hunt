@@ -12,7 +12,6 @@ Time spent: 23 hours spent in total
 
 <div>
     <a href="https://www.loom.com/share/9c9b06d1550a43dfb3ac08aa14c1f9e5">
-    
     </a>
     <a href="https://www.loom.com/share/9c9b06d1550a43dfb3ac08aa14c1f9e5">
       <img style="max-width:300px;" src="https://cdn.loom.com/sessions/thumbnails/9c9b06d1550a43dfb3ac08aa14c1f9e5-1e8b8474bf5b1fcd-full-play.gif">
